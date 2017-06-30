@@ -1,0 +1,18 @@
+--- property_handler.cc	2017-06-30 18:21:32.374639575 +0900
++++ property_handler.cc.new	2017-06-30 18:51:53.588484198 +0900
+@@ -79,11 +79,11 @@
+ // https://github.com/google/mozc/issues/201
+ // On IBus 1.4.x, IBus expects that an IME should always be turned on and
+ // IME on/off keys are handled by IBus itself rather than each IME.
+-#if IBUS_CHECK_VERSION(1, 5, 0)
+-const bool kActivatedOnLaunch = false;
+-#else
++// #if IBUS_CHECK_VERSION(1, 5, 0)
++// const bool kActivatedOnLaunch = false;
++// #else
+ const bool kActivatedOnLaunch = true;
+-#endif  // IBus>=1.5.0
++// #endif  // IBus>=1.5.0
+ 
+ }  // namespace
+ 
