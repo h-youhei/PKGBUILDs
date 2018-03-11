@@ -1,0 +1,59 @@
+# Contributor: Kohei Suzuki <eagletmt@gmail.com>
+# Contributor: Daniel Wallace < danielwallace at gtmanfred dot com >
+# Contributor: Yoel Lion <yoel3ster at gmail dot com>
+# Contributor: Netanel Shine <Netanelshine@gmail.com>
+# Contributor: tobias <tobias@archlinux.org>
+# Contributor: Gatekeeper <cool_work@yahoo.com>
+# Maintainer: aksr <aksr at t-com dot me>
+pkgname=mlterm
+pkgver=3.8.5
+pkgrel=0
+pkgdesc="Multi Lingual TERMinal emulator on X"
+url="http://mlterm.sourceforge.net/"
+arch=('i686' 'x86_64')
+license=('BSD')
+depends=('libutempter' 'xorg-server' 'glibc')
+optdepends=('ibus' 'fcitx')
+makedepends=('make' 'gcc' 'fakeroot' 'pkg-config')
+options=(!libtool)
+source=(http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz $pkgname.desktop)
+md5sums=('SKIP'
+         'SKIP')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  ./configure --prefix=/usr --libexecdir=/usr/lib/mlterm --sysconfdir=/etc --mandir=/usr/share/man \
+              --disable-fribidi \
+	      --disable-ind \
+	      --disable-ssh2 \
+              --enable-optimize-redrawing \
+              --disable-static \
+              --with-type-engines=cairo \
+              --with-gui=xlib \
+	      --disable-use-tools \
+	      --disable-image \
+	      --disable-otl \
+	      --disable-kbd \
+	      --disable-uim \
+	      --disable-m17mlib \
+	      --disable-scim \
+	      --disable-canna \
+	      --disable-wnn \
+	      --disable-skk \
+	      --disable-iiimf
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  make DESTDIR="$pkgdir" install
+  echo 'conf_menu_path_2 = mlterm-zoom' >> "$pkgdir/etc/mlterm/main"
+
+  # install some freedesktop.org compatibility
+  install -D -m644 "$srcdir/$pkgname.desktop" \
+    "$pkgdir/usr/share/applications/$pkgname.desktop"
+  install -D -m644 "contrib/icon/$pkgname-icon.svg" \
+    "$pkgdir/usr/share/pixmaps/$pkgname.svg"
+}
+
