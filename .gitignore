@@ -3,3 +3,4 @@
 *.install
 .SRCINFO
 */*/*/
+aur/teensy-loader-cli
