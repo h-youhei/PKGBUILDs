@@ -7,7 +7,7 @@
 # Maintainer: aksr <aksr at t-com dot me>
 pkgname=mlterm
 pkgver=3.8.5
-pkgrel=0
+pkgrel=1
 pkgdesc="Multi Lingual TERMinal emulator on X"
 url="http://mlterm.sourceforge.net/"
 arch=('i686' 'x86_64')
@@ -16,33 +16,37 @@ depends=('libutempter' 'xorg-server' 'glibc')
 optdepends=('ibus' 'fcitx')
 makedepends=('make' 'gcc' 'fakeroot' 'pkg-config')
 options=(!libtool)
+provides=('mlterm' 'mlclient')
 source=(http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz $pkgname.desktop)
 md5sums=('SKIP'
          'SKIP')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
-  ./configure --prefix=/usr --libexecdir=/usr/lib/mlterm --sysconfdir=/etc --mandir=/usr/share/man \
-              --disable-fribidi \
-	      --disable-ind \
-	      --disable-ssh2 \
-              --enable-optimize-redrawing \
-              --disable-static \
-              --with-type-engines=cairo \
-              --with-gui=xlib \
-	      --disable-use-tools \
-	      --disable-image \
-	      --disable-otl \
-	      --disable-kbd \
-	      --disable-uim \
-	      --disable-m17mlib \
-	      --disable-scim \
-	      --disable-canna \
-	      --disable-wnn \
-	      --disable-skk \
-	      --disable-iiimf
-  make
+	cd "$srcdir/$pkgname-$pkgver"
+	./configure --prefix=/usr --libexecdir=/usr/lib/mlterm --sysconfdir=/etc --mandir=/usr/share/man \
+		--disable-fribidi \
+		--disable-ind \
+		--disable-ssh2 \
+		--disable-static \
+		--with-type-engines=cairo \
+		--with-gui=xlib \
+		--disable-use-tools \
+		--disable-image \
+		--disable-otl \
+		--disable-dnd \
+		--disable-kbd \
+		--disable-uim \
+		--disable-m17mlib \
+		--disable-scim \
+		--disable-canna \
+		--disable-wnn \
+		--disable-skk \
+		--disable-iiimf
+#this causes glitch after displaying box drawing characters
+		#--enable-optimize-redrawing
+	make
 }
+
 
 package() {
   cd "$srcdir/$pkgname-$pkgver"
