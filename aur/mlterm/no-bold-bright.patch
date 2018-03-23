@@ -1,0 +1,20 @@
+diff --git a/vtemu/vt_parser.c b/vtemu/vt_parser.c
+index 9841f83..8d92201 100644
+--- a/vtemu/vt_parser.c
++++ b/vtemu/vt_parser.c
+@@ -956,15 +956,6 @@ static void put_char(vt_parser_t *vt_parser, u_int32_t ch, ef_charset_t cs,
+       is_bold = 0;
+       fg_color = VT_BOLD_COLOR;
+     }
+-  } else {
+-    if (is_bold) {
+-      if (IS_VTSYS_BASE_COLOR(fg_color)) {
+-        fg_color |= VT_BOLD_COLOR_MASK;
+-      }
+-      if (vt_parser->bold_affects_bg && IS_VTSYS_BASE_COLOR(bg_color)) {
+-        bg_color |= VT_BOLD_COLOR_MASK;
+-      }
+-    }
+   }
+ 
+   if (vt_parser->is_reversed) {

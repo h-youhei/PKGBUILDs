@@ -13,13 +13,24 @@ url="http://mlterm.sourceforge.net/"
 arch=('i686' 'x86_64')
 license=('BSD')
 depends=('libutempter' 'xorg-server' 'glibc')
-optdepends=('ibus' 'fcitx')
+optdepends=('ibus')
 makedepends=('make' 'gcc' 'fakeroot' 'pkg-config')
 options=(!libtool)
-provides=('mlterm' 'mlclient')
-source=(http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz $pkgname.desktop)
-md5sums=('SKIP'
-         'SKIP')
+source=(
+	http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz
+	$pkgname.desktop
+	no-bold-bright.patch
+)
+md5sums=(
+	'SKIP'
+	'SKIP'
+	'SKIP'
+)
+
+prepare() {
+	cd "$srcdir/$pkgname-$pkgver"
+	patch -u -i $srcdir/no-bold-bright.patch vtemu/vt_parser.c
+}
 
 build() {
 	cd "$srcdir/$pkgname-$pkgver"
@@ -36,6 +47,7 @@ build() {
 		--disable-dnd \
 		--disable-kbd \
 		--disable-uim \
+		--disable-fcitx \
 		--disable-m17mlib \
 		--disable-scim \
 		--disable-canna \
